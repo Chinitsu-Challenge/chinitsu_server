@@ -12,7 +12,7 @@ if not os.path.exists(save_folder):
 
 # Function to download and save an image
 def download_and_save_image(url, save_path):
-    if os.path.getsize(save_path) > 1000: # file exists
+    if os.path.exists(save_path) and os.path.getsize(save_path) > 1000: # file exists
         return
     try:
         response = requests.get(url)
