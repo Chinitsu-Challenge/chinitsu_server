@@ -1,36 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Game Room</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chinitsu</title>
+    <h1>Simple web client just for testing</h1>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var websocket;
-            var playerId = prompt("Enter playerId:");
-            var roomName = prompt("Enter the room name:");
-            if (roomName) {
-                websocket = new WebSocket(`ws://127.0.0.1:8000/ws/${roomName}/${playerId}`);
-                
-                websocket.onmessage = function(event) {
-                    var messages = document.getElementById('messages');
-                    var message = document.createElement('li');
-                    message.textContent = event.data;
-                    messages.appendChild(message);
-                };
+      document.addEventListener("DOMContentLoaded", () => {
+        var websocket;
+        var playerId = prompt("Enter playerId:");
+        var roomName = prompt("Enter the room name:");
+        if (roomName) {
+          websocket = new WebSocket(
+            `ws://127.0.0.1:8000/ws/${roomName}/${playerId}`
+          );
 
-                document.getElementById('sendButton').onclick = function() {
-                    var input = document.getElementById('messageText');
-                    websocket.send(input.value);
-                    input.value = '';
-                };
+          websocket.onopen = function (event) {
+            console.log("Connected to WebSocket");
+          };
+
+          websocket.onmessage = function (event) {
+            var messages = document.getElementById("messages");
+            var message = document.createElement("li");
+            message.textContent = event.data;
+            messages.appendChild(message);
+          };
+
+          websocket.onclose = function (event) {
+            console.log("WebSocket closed:", event);
+            // Check if the WebSocket was closed with the code for "room full"
+            if (event.code === 1003) {
+              if (event.reason === "room_full") {
+                alert("The room is full. Please try joining another room or create a new one.");
+              }
+              if (event.reason === "duplicate_id") {
+                alert("Your Game ID is in use by someone else. Please use another one.");
+              }
+              location.reload();
             }
+          }
+
+        }
+
+          document.getElementById("sendButton").onclick = function () {
+            var action = document.getElementById("messageText");
+            var card_idx = document.getElementById("card_idx");
+            websocket.send(JSON.stringify({"broadcast": true, "action": action.value, "card_idx": card_idx.value}));
+            action.value = "";
+            card_idx.value = "";
+          };
         });
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <ul id="messages"></ul>
-    <input type="text" id="messageText">
+    action
+    <input type="text" id="messageText" />
+    card_idx
+    <input type="text" id="card_idx" />
     <button id="sendButton">Send</button>
-</body>
+  </body>
 </html>
