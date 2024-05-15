@@ -5,6 +5,7 @@ from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 from mahjong.hand_calculating.hand_response import HandResponse
+from mahjong.constants import EAST, SOUTH, WEST, NORTH
 
 # useful helper
 def print_hand_result(hand_result):
@@ -44,6 +45,7 @@ class AgariJudger():
               is_renhou=False,
               is_chiihou=False,
               is_open_riichi=False,
+              is_oya=False,
               kyoutaku_number=0,
               tsumi_number=0) -> HandResponse:
         hand_souzi_str = ''.join(sorted([s.strip('s') for s in hand]))
@@ -63,6 +65,7 @@ class AgariJudger():
                                                                                 is_renhou=is_renhou,
                                                                                 is_chiihou=is_chiihou,
                                                                                 is_open_riichi=is_open_riichi,
+                                                                                player_wind=(EAST if is_oya else NORTH),
                                                                                 kyoutaku_number=kyoutaku_number,
                                                                                 tsumi_number=tsumi_number)
                                                             )

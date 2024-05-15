@@ -127,7 +127,7 @@ class ConnectionManager:
             return
         cur_game = self.game_manager.get_game(room_name)
         
-        card_idx = int(info["card_idx"]) if info["card_idx"].isdigit() else -1
+        card_idx = int(info["card_idx"]) if info["card_idx"].isdigit() else None
         result = cur_game.input(info["action"], card_idx, player_id)
         if result:
             for connection in self.active_connections[room_name]:
