@@ -1,8 +1,9 @@
-
+# cheat codes for debug purpose
 import random
 
 debug_cards = {
-    114514 : ("11123455678999", "1112224567899")
+    114514 : ("11123455678999", "1112224567899"),
+    1001: ("11123455556789", "1234567888899"),
 }
 
 # ref: reverse this process
@@ -21,20 +22,19 @@ def debug_yama(debug_code: int):
     """
     yama = []
     oya_hand,  ko_hand = [c + 's' for c in list(debug_cards[debug_code][0])], [c + 's' for c in list(debug_cards[debug_code][1])]
-    
+
     insert_into_yama(yama, ko_hand, 1)
     insert_into_yama(yama, oya_hand, 2)
     for _ in range(3):
         insert_into_yama(yama, ko_hand, 4)
         insert_into_yama(yama, oya_hand, 4)
-    
+
     for _ in range(4*9-14-13):
         x = random.randint(1,9)
         yama.append(f"{x}s")
 
     return yama
-    
-    
+
+
 if __name__ == "__main__":
     print(debug_yama(114514))
-    

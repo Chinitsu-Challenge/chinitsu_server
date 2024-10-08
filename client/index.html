@@ -20,8 +20,8 @@
           };
 
           websocket.onmessage = function (event) {
-            var messages = document.getElementById("messages");
-            var message = document.createElement("li");
+            let messages = document.getElementById("messages");
+            let message = document.createElement("li");
             message.textContent = event.data;
             messages.appendChild(message);
           };
@@ -41,13 +41,44 @@
           }
 
         }
-
           document.getElementById("sendButton").onclick = function () {
-            var action = document.getElementById("messageText");
-            var card_idx = document.getElementById("card_idx");
+            let action = document.getElementById("messageText");
+            let card_idx = document.getElementById("card_idx");
             websocket.send(JSON.stringify({"broadcast": true, "action": action.value, "card_idx": card_idx.value}));
             action.value = "";
             card_idx.value = "";
+          };
+
+          document.getElementById("reach").onclick = function () {
+            let action = 'reach';
+            let card_idx = document.getElementById("card_idx");
+            websocket.send(JSON.stringify({"broadcast": true, "action": action, "card_idx": card_idx.value}));
+            action.value = "";
+            card_idx.value = "";
+          };
+
+          document.getElementById("tsumo").onclick = function () {
+            let action = 'tsumo';
+            let card_idx = document.getElementById("card_idx");
+            websocket.send(JSON.stringify({"broadcast": true, "action": action, "card_idx": card_idx.value}));
+            action.value = "";
+            card_idx.value = "";
+          };
+
+          document.getElementById("ron").onclick = function () {
+            let action = 'ron';
+            let card_idx = document.getElementById("card_idx");
+            websocket.send(JSON.stringify({"broadcast": true, "action": action, "card_idx": card_idx.value}));
+            action.value = "";
+            card_idx.value = "";
+          };
+
+          document.getElementById("start").onclick = function () {
+            let action = 'start';
+            let cheat_code = document.getElementById("cheat_code");
+            websocket.send(JSON.stringify({"broadcast": true, "action": action, "card_idx": cheat_code.value}));
+            action.value = "";
+            cheat_code.value = "";
           };
         });
     </script>
@@ -59,5 +90,14 @@
     card_idx
     <input type="text" id="card_idx" />
     <button id="sendButton">Send</button>
+    <div>
+      <button id="reach">reach</button>
+      <button id="tsumo">tsumo</button>
+      <button id="ron">ron</button>
+    </div>
+    <div>
+      <button id="start">start!</button>
+      <input type="text" id="cheat_code" />
+    </div>
   </body>
 </html>
